@@ -1,107 +1,185 @@
-# 💰 FinanceFlow — Personal Finance Management System
+# 💰 FinanceFlow – Personal Finance Management System
 
-FinanceFlow is a full-stack web application for tracking personal income and expenses, managing monthly budgets, and generating financial reports. Built with **Spring Boot**, **Thymeleaf**, and **MySQL**.
+**FinanceFlow** is a full-stack web application developed as an individual project to help users manage their personal finances efficiently. It allows users to track income and expenses, manage monthly budgets, monitor financial activities, and generate detailed financial reports through a user-friendly dashboard.
 
-## ✨ Features
+## ✨ Key Features
 
 ### 👤 User Management
-- Secure registration & login (passwords hashed with BCrypt)
-- Session-based authentication — each user only sees their own data
-- Profile management (update name & phone)
-- Change password
+- Secure user registration and login
+- Password hashing using BCrypt
+- Session-based authentication
+- User profile management
+- Change password functionality
+- User-specific financial data access
 
 ### 💰 Income Management
-- Add, edit, delete income entries
-- Search by source
-- Filter by date or amount range
+- Add, edit, and delete income records
+- Search income by source
+- Filter records by date and amount range
 
 ### 💸 Expense Management
-- Add, edit, delete expense entries
-- Categorized expenses: Food, Transport, Rent, Bills, Education, Entertainment, Shopping, Healthcare, Other
-- Search / filter by category, date, or amount range
+- Add, edit, and delete expense records
+- Categorize expenses into:
+  - Food
+  - Transport
+  - Rent
+  - Bills
+  - Education
+  - Entertainment
+  - Shopping
+  - Healthcare
+  - Other
+- Search and filter expenses by category, date, and amount range
 
-### 📊 Dashboard
-- Total income, total expenses, current balance
+### 📊 Interactive Dashboard
+- Display total income and total expenses
+- View current balance
 - Monthly expense summary
-- Top spending category
-- Budget usage progress bar
-- Income vs Expense chart (Chart.js)
+- Identify top spending category
+- Track budget usage with a progress bar
+- Visualize income vs. expenses using Chart.js
 
-### 📈 Reports
-- Full report (all records)
+### 📈 Financial Reports
+- Full financial report
 - Monthly report
 - Yearly report
 - Category-wise report
-- Export as **PDF** or **Excel**
+- Export reports as PDF
+- Export reports as Excel files
 
-## 🛠️ Tech Stack
+## 🛠️ Technologies Used
 
 | Layer | Technology |
 |---|---|
-| Backend | Java 22, Spring Boot 3.5 |
-| Web / Templating | Spring MVC, Thymeleaf |
-| Data Access | Spring Data JPA (Hibernate) |
+| Programming Language | Java 22 |
+| Backend Framework | Spring Boot 3.5 |
+| Web Framework | Spring MVC |
+| Template Engine | Thymeleaf |
+| Data Access | Spring Data JPA / Hibernate |
 | Database | MySQL |
 | Security | Spring Security Crypto (BCrypt) |
-| Frontend | Bootstrap 5, Chart.js |
-| Reporting | iText (PDF), Apache POI (Excel) |
+| Frontend | HTML, CSS, Bootstrap 5 |
+| Data Visualization | Chart.js |
+| PDF Generation | iText |
+| Excel Generation | Apache POI |
 | Build Tool | Maven |
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Java 22+
-- Maven
-- MySQL Server running locally
 
-### Setup
+Make sure you have installed:
 
-1. Clone the repository
-   ```bash
-   git clone <your-repo-url>
-   cd financeflow
-   ```
+- Java 22 or later
+- MySQL Server
+- Maven (or use the included Maven Wrapper)
+- IntelliJ IDEA or another Java IDE
 
-2. Create the database
-   ```sql
-   CREATE DATABASE financeflow;
-   ```
+### Installation and Setup
 
-3. Update database credentials in `src/main/resources/application.properties`
-   ```properties
-   spring.datasource.url=jdbc:mysql://localhost:3306/financeflow
-   spring.datasource.username=root
-   spring.datasource.password=yourpassword
-   ```
+**1. Clone the repository**
 
-4. Run the application
-   ```bash
-   ./mvnw spring-boot:run
-   ```
+```bash
+git clone https://github.com/IT24101707/FinanceFlow.git
+cd FinanceFlow
+```
 
-5. Open your browser at `http://localhost:8080/api/users/` to register an account.
+**2. Create the MySQL database**
+
+Open MySQL Workbench and execute:
+
+```sql
+CREATE DATABASE financeflow;
+```
+
+**3. Configure database credentials**
+
+Update your local `src/main/resources/application.properties` file with your MySQL connection details.
+
+Example:
+
+```properties
+spring.datasource.url=jdbc:mysql://localhost:3306/financeflow
+spring.datasource.username=${DB_USERNAME}
+spring.datasource.password=${DB_PASSWORD}
+```
+
+Keep your actual database credentials private. Do not commit passwords or sensitive information to GitHub.
+
+**4. Run the application**
+
+On Windows:
+
+```bash
+mvnw.cmd spring-boot:run
+```
+
+Alternatively, run the main Spring Boot application class from your IDE.
+
+**5. Open the application**
+
+Visit the following URL in your browser to access the registration page:
+
+```text
+http://localhost:8080/api/users/
+```
 
 ## 📁 Project Structure
 
+```text
+FinanceFlow/
+│
+├── src/
+│   ├── main/
+│   │   ├── java/com/financeflow/financeflow/
+│   │   │   ├── config/
+│   │   │   ├── controller/
+│   │   │   ├── entity/
+│   │   │   ├── repository/
+│   │   │   └── service/
+│   │   │
+│   │   └── resources/
+│   │       ├── templates/
+│   │       └── application.properties
+│   │
+│   └── test/
+│
+├── .mvn/
+├── mvnw
+├── mvnw.cmd
+├── pom.xml
+└── README.md
 ```
-src/main/java/com/financeflow/financeflow/
-├── config/       # Session/login interceptor & web config
-├── controller/   # MVC controllers
-├── entity/       # JPA entities
-├── repository/   # Spring Data JPA repositories
-└── service/      # Business logic (auth, reports, etc.)
 
-src/main/resources/
-├── templates/    # Thymeleaf HTML views
-└── application.properties
-```
+## 🔒 Security
 
-## 🔒 Security Notes
+- User passwords are hashed using BCrypt.
+- Financial records are scoped to the logged-in user.
+- Protected application routes are guarded by a login interceptor.
 
-- Passwords are hashed with BCrypt before being stored.
-- All financial data is scoped to the logged-in user.
-- Protected routes are guarded by a login interceptor.
+## 📚 Learning Outcomes
 
-## 📄 License
+Developing FinanceFlow independently helped me gain practical experience in:
 
-This project was built for academic purposes as part of a university coursework project.
+- Java and Spring Boot Development
+- MVC Architecture
+- CRUD Operations
+- Spring Data JPA and Hibernate
+- MySQL Database Management
+- Session-based Authentication
+- Financial Dashboard Development
+- PDF and Excel Report Generation
+- Full-Stack Web Application Development
+
+## 👩‍💻 Developer
+
+**Adini Uththara Amarakoon**
+
+BSc (Hons) in Information Technology  
+Specialization in Information Systems Engineering  
+Sri Lanka Institute of Information Technology (SLIIT)
+
+---
+
+⭐ Thank you for exploring FinanceFlow! Feedback and suggestions are welcome.
+
