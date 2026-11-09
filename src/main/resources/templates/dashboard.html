@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script th:src="@{/js/theme.js}"></script>
+    <meta charset="UTF-8">
+    <title>FinanceFlow Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="ff-body">
+
+<div class="ff-app">
+
+    <div th:replace="~{fragments/nav :: sidebar(active='dashboard')}"></div>
+
+    <div class="ff-main">
+
+        <div th:replace="~{fragments/nav :: topbar(pageTitle='Dashboard')}"></div>
+
+        <!-- Stat Cards -->
+        <div class="row g-2 mb-2">
+
+            <div class="col-md-3 col-6">
+                <div class="ff-card ff-stat-card h-100">
+                    <div>
+                        <div class="ff-stat-label">Total Income</div>
+                        <div class="ff-stat-value" th:text="'Rs. ' + ${#numbers.formatDecimal(totalIncome,0,'COMMA',2,'POINT')}"></div>
+                        <div class="ff-stat-change" th:classappend="${incomeChange >= 0} ? 'ff-change-up' : 'ff-change-down'">
+                            <i th:class="${incomeChange >= 0} ? 'bi bi-arrow-up-short' : 'bi bi-arrow-down-short'"></i>
+                            <span th:text="${#numbers.formatDecimal(incomeChange,0,1)} + '% from last month'"></span>
+                        </div>
+                    </div>
+                    <div class="ff-stat-icon bg-soft-green"><i class="bi bi-graph-up-arrow"></i></div>
+                </div>
+            </div>
+
+            <div class="col-md-3 col-6">
+                <div class="ff-card ff-stat-card h-100">
+                    <div>
+                        <div class="ff-stat-label">Total Expense</div>
+                        <div class="ff-stat-value" th:text="'Rs. ' + ${#numbers.formatDecimal(totalExpense,0,'COMMA',2,'POINT')}"></div>
+                        <div class="ff-stat-change" th:classappend="${expenseChange <= 0} ? 'ff-change-up' : 'ff-change-down'">
+                            <i th:class="${expenseChange >= 0} ? 'bi bi-arrow-up-short' : 'bi bi-arrow-down-short'"></i>
+                            <span th:text="${#numbers.formatDecimal(expenseChange,0,1)} + '% from last month'"></span>
+                        </div>
+                    </div>
+                    <div class="ff-stat-icon bg-soft-red"><i class="bi bi-graph-down-arrow"></i></div>
+                </div>
+            </div>
+
+            <div class="col-md-3 col-6">
+                <div class="ff-card ff-stat-card h-100">
+                    <div>
+                        <div class="ff-stat-label">Balance</div>
+                        <div class="ff-stat-value" th:text="'Rs. ' + ${#numbers.formatDecimal(balance,0,'COMMA',2,'POINT')}"></div>
+                        <div class="ff-stat-change" th:classappend="${balanceChange >= 0} ? 'ff-change-up' : 'ff-change-down'">
+                            <i th:class="${balanceChange >= 0} ? 'bi bi-arrow-up-short' : 'bi bi-arrow-down-short'"></i>
+                            <span th:text="${#numbers.formatDecimal(balanceChange,0,1)} + '% from last month'"></span>
+                        </div>
+                    </div>
+                    <div class="ff-stat-icon bg-soft-blue"><i class="bi bi-wallet2"></i></div>
+                </div>
+            </div>
+
+            <div class="col-md-3 col-6">
+                <div class="ff-card ff-stat-card h-100">
+                    <div>
+                        <div class="ff-stat-label">Savings Rate</div>
+                        <div class="ff-stat-value" th:text="${#numbers.formatDecimal(savingsRate,0,1)} + '%'"></div>
+                        <div class="ff-stat-change" th:classappend="${savingsRateChange >= 0} ? 'ff-change-up' : 'ff-change-down'">
+                            <i th:class="${savingsRateChange >= 0} ? 'bi bi-arrow-up-short' : 'bi bi-arrow-down-short'"></i>
+                            <span th:text="${#numbers.formatDecimal(savingsRateChange,0,1)} + ' pts from last month'"></span>
+                        </div>
+                    </div>
+                    <div class="ff-stat-icon bg-soft-orange"><i class="bi bi-piggy-bank-fill"></i></div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Chart + Budget Overview -->
+        <div class="row g-2 mb-2">
+
+            <div class="col-lg-7">
+                <div class="ff-card h-100">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div class="ff-card-title">Income vs Expense</div>
+                    </div>
+                    <div style="height:150px;"><canvas id="financeChart"></canvas></div>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="ff-card h-100">
+                    <div class="ff-card-title mb-2">Budget Overview</div>
+
+                    <div class="ff-stat-label">Monthly Budget</div>
+                    <div class="ff-stat-value mb-2" th:text="'Rs. ' + ${#numbers.formatDecimal(budget,0,'COMMA',2,'POINT')}"></div>
+
+                    <div class="d-flex justify-content-between mb-1" style="font-size:.78rem; color:var(--ff-text-muted);">
+                        <span>Budget Usage</span>
+                        <span th:text="${#numbers.formatDecimal(progress,0,1)} + '%'"></span>
+                    </div>
+                    <div class="ff-progress mb-2">
+                        <div class="ff-progress-bar" th:style="'width:' + ${progress} + '%'"></div>
+                    </div>
+
+                    <div class="ff-stat-label">Remaining Budget</div>
+                    <div class="ff-stat-value" style="font-size:1rem;" th:text="'Rs. ' + ${#numbers.formatDecimal(remainingBudget,0,'COMMA',2,'POINT')}"></div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Recent Transactions + Top Category -->
+        <div class="row g-2">
+
+            <div class="col-lg-7">
+                <div class="ff-card h-100">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <div class="ff-card-title">Recent Transactions</div>
+                        <a href="/report" class="ff-btn ff-btn-outline" style="padding:4px 10px; font-size:.74rem;">View All</a>
+                    </div>
+
+                    <table class="ff-table">
+                        <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Description</th>
+                            <th>Type</th>
+                            <th>Amount</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="t, iter : ${recentTransactions}" th:if="${iter.index < 4}">
+                            <td th:text="${t.date}"></td>
+                            <td th:text="${t.description}"></td>
+                            <td>
+                                <span class="ff-badge"
+                                      th:classappend="${t.type == 'Income'} ? 'ff-badge-income' : 'ff-badge-expense'"
+                                      th:text="${t.type}"></span>
+                            </td>
+                            <td th:text="'Rs. ' + ${#numbers.formatDecimal(t.amount,0,'COMMA',2,'POINT')}"></td>
+                        </tr>
+                        <tr th:if="${recentTransactions.isEmpty()}">
+                            <td colspan="4" style="text-align:center; color:var(--ff-text-muted);">No transactions yet</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="ff-card h-100">
+                    <div class="ff-card-title mb-2">Top Spending Category</div>
+                    <div style="height:170px;"><canvas id="categoryChart"></canvas></div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script th:inline="javascript">
+    let income = [[${incomeChart}]];
+    let expense = [[${expenseChart}]];
+    let categoryLabels = [[${categoryLabels}]];
+    let categoryValues = [[${categoryValues}]];
+
+    new Chart(document.getElementById('financeChart'), {
+        type: 'bar',
+        data: {
+            labels: ['Income', 'Expense'],
+            datasets: [{
+                data: [income, expense],
+                backgroundColor: ['#22C55E', '#EF4444'],
+                borderRadius: 8,
+                barThickness: 60
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: { y: { beginAtZero: true } }
+        }
+    });
+
+    if (categoryLabels.length > 0) {
+        new Chart(document.getElementById('categoryChart'), {
+            type: 'doughnut',
+            data: {
+                labels: categoryLabels,
+                datasets: [{
+                    data: categoryValues,
+                    backgroundColor: ['#4F6EF7','#22C55E','#EF4444','#F59E0B','#7C5CFC','#06B6D4','#EC4899','#84CC16','#F97316']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { position: 'right', labels: { boxWidth: 10, font: { size: 11 } } } },
+                cutout: '65%'
+            }
+        });
+    }
+</script>
+
+<script th:src="@{/js/app.js}"></script>
+</body>
+</html>

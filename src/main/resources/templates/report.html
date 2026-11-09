@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script th:src="@{/js/theme.js}"></script>
+    <meta charset="UTF-8">
+    <title>FinanceFlow Reports</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="ff-body">
+
+<div class="ff-app">
+
+    <div th:replace="~{fragments/nav :: sidebar(active='report')}"></div>
+
+    <div class="ff-main">
+
+        <div th:replace="~{fragments/nav :: topbar(pageTitle='Reports')}"></div>
+
+        <!-- Stat cards -->
+        <div class="row g-2 mb-2">
+            <div class="col-md-4">
+                <div class="ff-card">
+                    <div class="ff-stat-label">Total Income</div>
+                    <div class="ff-stat-value" style="color:var(--ff-green);" th:text="'Rs. ' + ${#numbers.formatDecimal(totalIncome,0,'COMMA',2,'POINT')}"></div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="ff-card">
+                    <div class="ff-stat-label">Total Expense</div>
+                    <div class="ff-stat-value" style="color:var(--ff-red);" th:text="'Rs. ' + ${#numbers.formatDecimal(totalExpense,0,'COMMA',2,'POINT')}"></div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="ff-card">
+                    <div class="ff-stat-label">Balance</div>
+                    <div class="ff-stat-value" style="color:var(--ff-blue);" th:text="'Rs. ' + ${#numbers.formatDecimal(balance,0,'COMMA',2,'POINT')}"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts -->
+        <div class="row g-2 mb-2">
+            <div class="col-lg-5">
+                <div class="ff-card h-100">
+                    <div class="ff-card-title mb-2">Expense by Category</div>
+                    <div style="height:150px;"><canvas id="categoryPie"></canvas></div>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="ff-card h-100">
+                    <div class="ff-card-title mb-2">Income vs Expense Trend</div>
+                    <div style="height:150px;"><canvas id="trendLine"></canvas></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Downloads -->
+        <div class="ff-card mb-2">
+
+            <div class="ff-card-title mb-2">Full Report (All Records)</div>
+            <a href="/report/pdf?type=all" class="ff-btn ff-btn-danger"><i class="bi bi-file-earmark-pdf"></i> Download PDF</a>
+            <a href="/report/excel?type=all" class="ff-btn ff-btn-success"><i class="bi bi-file-earmark-excel"></i> Download Excel</a>
+
+        </div>
+
+        <div class="row g-2">
+
+            <div class="col-md-4">
+                <div class="ff-card h-100">
+                    <div class="ff-card-title mb-2">📅 Monthly Report</div>
+                    <input type="month" id="monthInput" class="ff-form-control mb-2">
+                    <div class="d-flex gap-2">
+                        <button class="ff-btn ff-btn-danger" onclick="downloadMonthly('pdf')">PDF</button>
+                        <button class="ff-btn ff-btn-success" onclick="downloadMonthly('excel')">Excel</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="ff-card h-100">
+                    <div class="ff-card-title mb-2">📆 Yearly Report</div>
+                    <input type="number" id="yearInput" class="ff-form-control mb-2" th:value="${currentYear}" min="2000" max="2100">
+                    <div class="d-flex gap-2">
+                        <button class="ff-btn ff-btn-danger" onclick="downloadYearly('pdf')">PDF</button>
+                        <button class="ff-btn ff-btn-success" onclick="downloadYearly('excel')">Excel</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="ff-card h-100">
+                    <div class="ff-card-title mb-2">🏷️ Category-wise Report</div>
+                    <select id="categoryInput" class="ff-form-control mb-2">
+                        <option th:each="c : ${categories}" th:value="${c}" th:text="${c}"></option>
+                    </select>
+                    <div class="d-flex gap-2">
+                        <button class="ff-btn ff-btn-danger" onclick="downloadCategory('pdf')">PDF</button>
+                        <button class="ff-btn ff-btn-success" onclick="downloadCategory('excel')">Excel</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script th:inline="javascript">
+    let categoryLabels = [[${categoryLabels}]];
+    let categoryValues = [[${categoryValues}]];
+    let trendLabels = [[${trendLabels}]];
+    let trendIncome = [[${trendIncome}]];
+    let trendExpense = [[${trendExpense}]];
+
+    if (categoryLabels.length > 0) {
+        new Chart(document.getElementById('categoryPie'), {
+            type: 'pie',
+            data: {
+                labels: categoryLabels,
+                datasets: [{
+                    data: categoryValues,
+                    backgroundColor: ['#4F6EF7','#22C55E','#EF4444','#F59E0B','#7C5CFC','#06B6D4','#EC4899','#84CC16','#F97316']
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { boxWidth: 10, font: { size: 11 } } } } }
+        });
+    }
+
+    new Chart(document.getElementById('trendLine'), {
+        type: 'line',
+        data: {
+            labels: trendLabels,
+            datasets: [
+                { label: 'Income', data: trendIncome, borderColor: '#22C55E', backgroundColor: 'rgba(34,197,94,.1)', tension: .3, fill: true },
+                { label: 'Expense', data: trendExpense, borderColor: '#EF4444', backgroundColor: 'rgba(239,68,68,.1)', tension: .3, fill: true }
+            ]
+        },
+        options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } }
+    });
+
+    function downloadMonthly(format) {
+        const month = document.getElementById('monthInput').value;
+        if (!month) { alert('Please select a month'); return; }
+        window.location.href = '/report/' + format + '?type=monthly&month=' + month;
+    }
+
+    function downloadYearly(format) {
+        const year = document.getElementById('yearInput').value;
+        if (!year) { alert('Please enter a year'); return; }
+        window.location.href = '/report/' + format + '?type=yearly&year=' + year;
+    }
+
+    function downloadCategory(format) {
+        const category = document.getElementById('categoryInput').value;
+        window.location.href = '/report/' + format + '?type=category&category=' + encodeURIComponent(category);
+    }
+</script>
+
+<script th:src="@{/js/app.js}"></script>
+</body>
+</html>

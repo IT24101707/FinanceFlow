@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<!-- Sidebar navigation. Usage: th:replace="~{fragments/nav :: sidebar(active='dashboard')}" -->
+<div th:fragment="sidebar(active)" class="ff-sidebar">
+
+    <div class="ff-logo">
+        <span class="ff-logo-icon">$</span>
+        <span class="ff-logo-text">FinanceFlow</span>
+    </div>
+
+    <nav class="ff-nav">
+        <a href="/dashboard" class="ff-nav-item" th:classappend="${active == 'dashboard'} ? ' active' : ''">
+            <i class="bi bi-grid-1x2-fill"></i><span>Dashboard</span>
+        </a>
+        <a href="/income" class="ff-nav-item" th:classappend="${active == 'income'} ? ' active' : ''">
+            <i class="bi bi-cash-coin"></i><span>Income</span>
+        </a>
+        <a href="/expense" class="ff-nav-item" th:classappend="${active == 'expense'} ? ' active' : ''">
+            <i class="bi bi-credit-card-2-front-fill"></i><span>Expense</span>
+        </a>
+        <a href="/budget" class="ff-nav-item" th:classappend="${active == 'budget'} ? ' active' : ''">
+            <i class="bi bi-wallet2"></i><span>Budget</span>
+        </a>
+        <a href="/report" class="ff-nav-item" th:classappend="${active == 'report'} ? ' active' : ''">
+            <i class="bi bi-bar-chart-fill"></i><span>Reports</span>
+        </a>
+        <a href="/profile" class="ff-nav-item" th:classappend="${active == 'profile'} ? ' active' : ''">
+            <i class="bi bi-person-fill"></i><span>Profile</span>
+        </a>
+    </nav>
+
+    <a href="/api/users/logout" class="ff-nav-item ff-logout">
+        <i class="bi bi-box-arrow-right"></i><span>Logout</span>
+    </a>
+
+</div>
+
+<!-- Top bar. Usage: th:replace="~{fragments/nav :: topbar(pageTitle='Income')}" -->
+<div th:fragment="topbar(pageTitle)" class="ff-topbar">
+
+    <div class="d-flex align-items-center gap-3">
+        <div class="ff-menu-toggle"><i class="bi bi-list"></i></div>
+        <div>
+            <div class="ff-topbar-welcome">Welcome back,</div>
+            <div class="ff-topbar-title" th:text="${loggedInUserName}"></div>
+        </div>
+    </div>
+
+    <div class="ff-topbar-actions">
+        <div class="ff-search">
+            <i class="bi bi-search"></i>
+            <input type="text" placeholder="Search here...">
+        </div>
+        <div class="ff-icon-btn"><i class="bi bi-bell"></i><span class="ff-dot"></span></div>
+        <img th:if="${loggedInUserPhoto != null}" th:src="@{'/uploads/' + ${loggedInUserPhoto}}" class="ff-avatar-img"/>
+        <div th:if="${loggedInUserPhoto == null}" class="ff-avatar"
+             th:text="${loggedInUserName != null and loggedInUserName != 'User'
+                       ? #strings.substring(loggedInUserName,0,1)
+                       : 'U'}"></div>
+    </div>
+
+</div>
+
+</body>
+</html>

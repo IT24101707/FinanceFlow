@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>FinanceFlow - Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+</head>
+<body class="ff-body">
+
+<div class="ff-auth-wrap">
+    <div class="ff-auth-outer">
+
+        <div class="ff-auth-side" style="background:linear-gradient(160deg,#4A3FAE 0%,#5B4FCC 55%,#4038A0 100%);">
+
+            <svg class="ff-auth-wave" viewBox="0 0 500 300" preserveAspectRatio="none" style="top:0; height:52%;" xmlns="http://www.w3.org/2000/svg">
+                <path d="M-20,90 C90,10 170,140 270,70 C350,15 430,70 530,20" fill="none" stroke="#ffffff" stroke-opacity=".55" stroke-width="5"></path>
+                <path d="M-20,140 C100,60 190,190 290,120 C370,65 450,120 530,80" fill="none" stroke="#ffffff" stroke-opacity=".35" stroke-width="4"></path>
+                <path d="M-20,40 C80,-15 150,80 250,25 C330,-15 410,25 530,-10" fill="none" stroke="#ffffff" stroke-opacity=".3" stroke-width="3"></path>
+                <path d="M-20,190 C110,110 210,240 310,170 C390,115 460,165 530,130" fill="none" stroke="#ffffff" stroke-opacity=".2" stroke-width="3"></path>
+            </svg>
+
+            <h1 style="font-family:'Playfair Display',serif; font-weight:700; font-size:2.1rem; margin-bottom:18px;">FinanceFlow</h1>
+            <p style="opacity:.9; max-width:300px; font-size:1rem; font-weight:600; line-height:1.5;">Smart Personal Finance<br>Management</p>
+
+            <svg class="ff-auth-illustration" viewBox="0 0 260 220" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <radialGradient id="glow" cx="50%" cy="42%" r="60%">
+                        <stop offset="0%" stop-color="#ffffff" stop-opacity=".45"></stop>
+                        <stop offset="100%" stop-color="#ffffff" stop-opacity="0"></stop>
+                    </radialGradient>
+                    <linearGradient id="walletGrad" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stop-color="#97A6F7"></stop>
+                        <stop offset="100%" stop-color="#5A62D6"></stop>
+                    </linearGradient>
+                    <linearGradient id="leafGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#9CF0A6"></stop>
+                        <stop offset="100%" stop-color="#5FCB6E"></stop>
+                    </linearGradient>
+                </defs>
+
+                <circle cx="130" cy="115" r="105" fill="url(#glow)"></circle>
+                <ellipse cx="130" cy="206" rx="72" ry="8" fill="#000" opacity=".18"></ellipse>
+
+                <path d="M118 120 q-14 -40 -34 -54" stroke="url(#leafGrad)" stroke-width="4.5" fill="none" stroke-linecap="round"></path>
+                <path d="M118 120 q4 -36 26 -48" stroke="url(#leafGrad)" stroke-width="4.5" fill="none" stroke-linecap="round"></path>
+                <path d="M118 120 q-2 -44 8 -60" stroke="url(#leafGrad)" stroke-width="4" fill="none" stroke-linecap="round"></path>
+                <ellipse cx="78" cy="66" rx="13" ry="19" fill="url(#leafGrad)" transform="rotate(-28 78 66)"></ellipse>
+                <ellipse cx="140" cy="60" rx="12" ry="18" fill="#8FE89A" transform="rotate(20 140 60)"></ellipse>
+                <ellipse cx="122" cy="48" rx="9" ry="15" fill="#A6F0AE" transform="rotate(-4 122 48)"></ellipse>
+
+                <rect x="65" y="112" width="130" height="86" rx="18" fill="url(#walletGrad)"></rect>
+                <rect x="65" y="112" width="130" height="34" rx="18" fill="#A7B4F9"></rect>
+                <rect x="65" y="132" width="130" height="8" fill="#8792F0" opacity=".6"></rect>
+                <circle cx="178" cy="155" r="8" fill="#E4E9FF"></circle>
+                <circle cx="178" cy="155" r="8" fill="none" stroke="#7480E8" stroke-width="1.5"></circle>
+
+                <circle cx="55" cy="182" r="16" fill="#F7C34E"></circle>
+                <circle cx="55" cy="182" r="11" fill="none" stroke="#E0A423" stroke-width="1.6"></circle>
+                <text x="55" y="187" font-size="13" font-weight="800" fill="#B87A0E" text-anchor="middle">$</text>
+                <circle cx="80" cy="192" r="13" fill="#F5BB3A"></circle>
+                <circle cx="80" cy="192" r="9" fill="none" stroke="#DDA020" stroke-width="1.4"></circle>
+
+                <g opacity=".8">
+                    <circle cx="205" cy="70" r="3" fill="#ffffff"></circle>
+                    <circle cx="222" cy="95" r="2" fill="#ffffff"></circle>
+                    <circle cx="45" cy="55" r="2.5" fill="#ffffff"></circle>
+                </g>
+            </svg>
+
+        </div>
+
+        <div class="ff-auth-form-wrap">
+            <div class="ff-auth-card-inner">
+
+                <div style="text-align:center; margin-bottom:6px;">
+                    <svg width="34" height="34" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" style="color:#4A3FAE;">
+                        <path d="M18 15c-7 0-12 4.5-12 10.5S11 36 18 36c6 0 9.5-3.5 11.5-7" stroke="currentColor" stroke-width="5" stroke-linecap="round"></path>
+                        <path d="M30 33c7 0 12-4.5 12-10.5S37 12 30 12c-6 0-9.5 3.5-11.5 7" stroke="currentColor" stroke-width="5" stroke-linecap="round"></path>
+                    </svg>
+                </div>
+
+                <h2 style="font-weight:700; text-align:center; margin-bottom:4px;">Welcome Back 👋</h2>
+                <p style="color:var(--ff-text-muted); font-size:.9rem; text-align:center; margin-bottom:24px;">Login to your account</p>
+
+                <div class="ff-badge bg-soft-green mb-3" style="display:block; padding:10px 14px;" th:if="${param.registered}">
+                    Registration successful! Please log in.
+                </div>
+                <div class="ff-badge bg-soft-red mb-3" style="display:block; padding:10px 14px;" th:if="${error}" th:text="${error}"></div>
+
+                <form th:action="@{/api/users/login}" method="post">
+
+                    <label class="ff-form-label">Email</label>
+                    <input type="email" name="email" class="ff-form-control mb-3" placeholder="example@gmail.com" required>
+
+                    <label class="ff-form-label">Password</label>
+                    <div class="ff-password-wrap mb-3">
+                        <input type="password" name="password" id="loginPassword" class="ff-form-control" placeholder="Password" required>
+                        <button type="button" class="ff-password-toggle" onclick="ffTogglePassword('loginPassword', this)">
+                            <i class="bi bi-eye-slash"></i>
+                        </button>
+                    </div>
+
+                    <div class="ff-remember-row">
+                        <label><input type="checkbox" name="remember" checked> Remember me</label>
+                        <a href="#" onclick="alert('Please contact support to reset your password.'); return false;">Forgot Password?</a>
+                    </div>
+
+                    <button type="submit" class="ff-btn ff-btn-primary" style="width:100%; justify-content:center;">Login</button>
+
+                </form>
+
+                <p style="text-align:center; margin-top:20px; font-size:.86rem; color:var(--ff-text-muted);">
+                    Don't have an account? <a th:href="@{/api/users/}" style="color:var(--ff-blue); font-weight:600;">Register here</a>
+                </p>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    function ffTogglePassword(id, btn) {
+        const input = document.getElementById(id);
+        const icon = btn.querySelector('i');
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.className = 'bi bi-eye';
+        } else {
+            input.type = 'password';
+            icon.className = 'bi bi-eye-slash';
+        }
+    }
+</script>
+
+</body>
+</html>

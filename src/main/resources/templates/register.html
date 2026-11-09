@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>FinanceFlow - Register</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+</head>
+<body class="ff-body">
+
+<div class="ff-auth-wrap">
+    <div class="ff-auth-outer">
+
+        <div class="ff-auth-side" style="background:linear-gradient(135deg,#7B85F5 0%,#6B5CE0 45%,#5342C4 100%);">
+
+            <svg class="ff-auth-wave" viewBox="0 0 500 600" preserveAspectRatio="none" style="top:0; left:0; width:100%; height:100%;" xmlns="http://www.w3.org/2000/svg">
+                <path d="M-40,180 C60,60 140,260 260,140 C360,40 430,140 540,90 L540,-40 L-40,-40 Z" fill="#ffffff" opacity=".16"></path>
+                <path d="M-40,250 C80,110 170,320 290,190 C380,100 450,180 540,150 L540,-40 L-40,-40 Z" fill="#ffffff" opacity=".12"></path>
+                <path d="M-40,110 C50,10 120,150 230,70 C320,10 400,70 540,20 L540,-40 L-40,-40 Z" fill="#ffffff" opacity=".22"></path>
+            </svg>
+
+            <div class="ff-auth-logo-icon" style="width:44px; height:44px; margin:0;">
+                <svg width="26" height="26" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" style="color:#fff;">
+                    <path d="M18 15c-7 0-12 4.5-12 10.5S11 36 18 36c6 0 9.5-3.5 11.5-7" stroke="currentColor" stroke-width="5" stroke-linecap="round"></path>
+                    <path d="M30 33c7 0 12-4.5 12-10.5S37 12 30 12c-6 0-9.5 3.5-11.5 7" stroke="currentColor" stroke-width="5" stroke-linecap="round"></path>
+                </svg>
+            </div>
+            <div style="display:flex; align-items:center; gap:12px; margin:16px 0 30px;">
+                <h1 style="font-weight:800; font-size:1.7rem; margin:0;">FinanceFlow</h1>
+            </div>
+
+            <svg class="ff-auth-illustration" viewBox="0 0 260 210" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <radialGradient id="glow2" cx="50%" cy="42%" r="60%">
+                        <stop offset="0%" stop-color="#ffffff" stop-opacity=".3"></stop>
+                        <stop offset="100%" stop-color="#ffffff" stop-opacity="0"></stop>
+                    </radialGradient>
+                </defs>
+
+                <circle cx="130" cy="105" r="95" fill="url(#glow2)"></circle>
+                <ellipse cx="130" cy="188" rx="66" ry="7" fill="#000" opacity=".12"></ellipse>
+
+                <path d="M112 108 q-6 -32 -24 -44" stroke="#CFE0FF" stroke-width="4.5" fill="none" stroke-linecap="round" opacity=".95"></path>
+                <path d="M118 106 q8 -28 24 -38" stroke="#CFE0FF" stroke-width="4.5" fill="none" stroke-linecap="round" opacity=".95"></path>
+                <ellipse cx="86" cy="58" rx="12" ry="18" fill="#DCEBFF" transform="rotate(-22 86 58)"></ellipse>
+                <ellipse cx="142" cy="60" rx="11" ry="17" fill="#E5F0FF" transform="rotate(18 142 60)"></ellipse>
+
+                <rect x="72" y="100" width="118" height="80" rx="17" fill="#B9C3F7"></rect>
+                <rect x="72" y="100" width="118" height="32" rx="17" fill="#D2D9FC"></rect>
+                <rect x="72" y="122" width="118" height="6" fill="#A6B0F2" opacity=".7"></rect>
+                <circle cx="167" cy="141" r="7" fill="#F0F2FF"></circle>
+                <circle cx="167" cy="141" r="7" fill="none" stroke="#9AA5EE" stroke-width="1.2"></circle>
+
+                <circle cx="63" cy="166" r="16" fill="#F3C361"></circle>
+                <circle cx="63" cy="166" r="11" fill="none" stroke="#DDA53A" stroke-width="1.8"></circle>
+                <text x="63" y="171" font-size="12" font-weight="800" fill="#B87A0E" text-anchor="middle">$</text>
+                <circle cx="192" cy="168" r="13" fill="#F0BA4C"></circle>
+                <circle cx="192" cy="168" r="9" fill="none" stroke="#DDA53A" stroke-width="1.6"></circle>
+                <circle cx="205" cy="174" r="10" fill="#EDB43F"></circle>
+            </svg>
+
+            <p style="opacity:.9; max-width:300px; font-size:.95rem; font-weight:600; line-height:1.5; margin-top:22px;">
+                Create your account and start<br>tracking your money today.
+            </p>
+
+        </div>
+
+        <div class="ff-auth-form-wrap">
+            <div class="ff-auth-card-inner">
+
+                <h2 style="font-weight:800; font-size:1.8rem; margin-bottom:4px;">Create Account</h2>
+                <p style="color:var(--ff-text-muted); font-size:.9rem; margin-bottom:24px;">Join FinanceFlow for free.</p>
+
+                <div class="ff-badge bg-soft-red mb-3" style="display:block; padding:10px 14px;" th:if="${error}" th:text="${error}"></div>
+
+                <form th:action="@{/api/users/register}" method="post">
+
+                    <div class="ff-filled-field mb-3">
+                        <div class="ff-filled-field-label"><i class="bi bi-person-fill"></i>
+                            <input type="text" name="fullName" placeholder="Full Name" required>
+                        </div>
+                    </div>
+
+                    <div class="ff-filled-field mb-3">
+                        <small>Email</small>
+                        <input type="email" name="email" placeholder="example@gmail.com" required>
+                    </div>
+
+                    <div class="ff-filled-field mb-3">
+                        <div class="ff-filled-field-label"><i class="bi bi-eye-slash" id="regPwIcon" style="cursor:pointer;" onclick="ffTogglePassword('regPassword', this)"></i>
+                            <input type="password" id="regPassword" name="password" placeholder="Password" required>
+                        </div>
+                    </div>
+
+                    <div class="ff-filled-field mb-4">
+                        <small>Phone</small>
+                        <input type="text" name="phone" placeholder="07x xxx xxxx" required>
+                    </div>
+
+                    <button type="submit" class="ff-btn ff-btn-primary" style="width:100%; justify-content:center;">Register</button>
+
+                </form>
+
+                <p style="text-align:center; margin-top:20px; font-size:.86rem; color:var(--ff-text-muted);">
+                    Already have an account? <a th:href="@{/api/users/login-page}" style="color:var(--ff-blue); font-weight:600;">Login here</a>
+                </p>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    function ffTogglePassword(id, iconEl) {
+        const input = document.getElementById(id);
+        if (input.type === 'password') {
+            input.type = 'text';
+            iconEl.className = 'bi bi-eye';
+        } else {
+            input.type = 'password';
+            iconEl.className = 'bi bi-eye-slash';
+        }
+    }
+</script>
+
+</body>
+</html>
